@@ -1,0 +1,7 @@
+{
+  "name": "Corona Virus Heatmap (2019/2020)",
+  "description": "A heatmap of the (current 2019/2020) Coronavirus Outbreak.",
+  "repository": "https://github.com/tcramer217/coronavirus-heatmap",
+  "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/master/public/node.svg",
+  "keywords": ["node", "express", "heroku", "heatmap", "coronavirus", "dataisbeautiful"]
+}

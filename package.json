@@ -1,0 +1,45 @@
+{
+  "name": "coronavirus-heatmap",
+  "version": "0.0.1",
+  "description": "A heatmap of the (current 2019/2020) Coronavirus Outbreak.",
+  "engines": {
+    "node": "12.x"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build": "webpack --watch --progress",
+    "deploy:local": "heroku local web",
+    "build:deploy:local": "npm run build && npm run deploy:local"
+  },
+  "dependencies": {
+    "@types/leaflet": "^1.5.8",
+    "@types/node": "^13.7.4",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "leaflet": "^1.6.0",
+    "leaflet.heat": "^0.2.0",
+    "ts-loader": "^6.2.1"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "request": "^2.81.0",
+    "tape": "^4.7.0",
+    "typescript": "^3.8.2",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tcramer217/coronavirus-heatmap"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "heroku",
+    "heatmap",
+    "coronavirus",
+    "dataisbeautiful"
+  ],
+  "license": "MIT"
+}
