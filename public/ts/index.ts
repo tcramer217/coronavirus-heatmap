@@ -1,23 +1,29 @@
 import { MapOptions, Map } from 'leaflet';
 import * as L from 'leaflet';
+import 'leaflet.heat';
 
-const FIXED_ZOOM: number = 2;
 const MAP_OPTS: MapOptions = {
-  zoomControl: false,
-  boxZoom: false,
-  minZoom: FIXED_ZOOM,
-  maxZoom: FIXED_ZOOM,
-  dragging: false,
-  center: L.latLng(100, 100)
+  minZoom: 0,
+  maxZoom: 15,
+  zoom: 2,
+  center: [31.12,112.18]
 };
-const TILE_URL = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
-const TILE_OPTS: L.TileLayerOptions = {
-  id: 'mapbox/streets-v11',
-  maxZoom: FIXED_ZOOM,
-  tileSize: 512,
-  zoomOffset: -1,
-  accessToken: process.env.API_KEY
-}
 
-let map: Map = L.map('map', MAP_OPTS).setView([100,100], null);
-L.tileLayer(TILE_URL, TILE_OPTS).addTo(map);
+const OSM_TITLE_URL = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+const OSM_TITLE_OPTS = {
+  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+};
+
+let map: Map = L.map('map', MAP_OPTS);
+L.tileLayer(OSM_TITLE_URL, OSM_TITLE_OPTS).addTo(map);
+map.setView([31.12,112.18], 2);
+
+const HEAT_MAP_VALS: Array<L.HeatLatLngTuple> = [
+  [31.1, 112.2, 0.9],
+  [50, 100, 0.5]
+]
+const HEAT_LAYER_OPTS: L.HeatMapOptions = {
+  minOpacity: 1,
+  radius: 20
+}
+L.heatLayer(HEAT_MAP_VALS, HEAT_LAYER_OPTS).addTo(map);
