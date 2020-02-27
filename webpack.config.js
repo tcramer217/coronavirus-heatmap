@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 module.exports = () => {
 
   // call dotenv and it will return an Object with a parsed key 
-  const env = dotenv.config().parsed;
+  const env = dotenv.config().parsed || process.env;
   console.log('env:', env);
   let envKeys = [];
   // reduce it to a nice object, the same as before
