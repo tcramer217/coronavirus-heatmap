@@ -13,3 +13,4 @@ Dockerfile
 docker-compose.yml
 
 # Distribution / WebPack Build Files
+public/dist/bundle.js
