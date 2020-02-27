@@ -9,7 +9,8 @@
   "scripts": {
     "start": "node index.js",
     "build-w": "webpack --watch --progress",
-    "build": "webpack",
+    "build": "webpack -p",
+    "heroku-postbuild": "webpack -p",
     "deploy:local": "heroku local web",
     "build:deploy:local": "npm run build && npm run deploy:local"
   },
