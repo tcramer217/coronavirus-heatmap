@@ -6,6 +6,7 @@ module.exports = () => {
 
   // call dotenv and it will return an Object with a parsed key 
   const env = dotenv.config().parsed;
+  console.log('env:', env);
   let envKeys = [];
   // reduce it to a nice object, the same as before
   if (typeof Object.keys(env) !== 'undefined' && Object.keys(env).length > 0) {
