@@ -6,6 +6,12 @@ import 'leaflet.heat';
 import 'leaflet.markercluster';
 import { SpreadDay } from './interface/spread';
 
+const n =  new Date();
+const y = n.getFullYear();
+const m = n.getMonth() + 1;
+const d = n.getDate();
+document.getElementById("date").innerHTML = m + "/" + d + "/" + y;
+
 const MAP_OPTS: MapOptions = {
   minZoom: 0,
   maxZoom: 15,
