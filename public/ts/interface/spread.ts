@@ -1,8 +1,10 @@
 import { Point } from "leaflet";
 
-interface SpreadDay {
+export interface SpreadDay {
   day: number;
   date: Date;
+  infectedToDate: number;
+  deathsToDate: number;
   occurances: SpreadOccurance[];
 }
 

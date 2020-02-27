@@ -1,55 +1,61 @@
-import { MapOptions, Map, HeatMapOptions } from 'leaflet';
-import { Point, HeatLatLngTuple } from "leaflet";
+import { MapOptions, Map } from 'leaflet';
+import getSpread from './spread';
+
 import * as L from 'leaflet';
 import 'leaflet.heat';
-import getSpread from './spread';
+import 'leaflet.markercluster';
+import { SpreadDay } from './interface/spread';
 
 const MAP_OPTS: MapOptions = {
   minZoom: 0,
   maxZoom: 15,
   zoom: 2,
-  center: [31.12,112.18]
+  center: [31.12,0]
 };
 
-const OSM_TITLE_URL = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+const OSM_TITLE_URL = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+// const OSM_TITLE_URL = 'https://tiles.wmflabs.org/osm-no-labels/{z}/{x}/{y}.png';
 const OSM_TITLE_OPTS = {
   attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 };
 
 let map: Map = L.map('map', MAP_OPTS);
 L.tileLayer(OSM_TITLE_URL, OSM_TITLE_OPTS).addTo(map);
-map.setView([31.12,112.18], 2);
+map.setView([31.12,0], 2);
 
-const HEAT_MAP_VALS: Array<HeatLatLngTuple> = [
-  [31.1, 112.2, 0.9],
-  [50, 100, 0.5]
-]
-const HEAT_LAYER_OPTS: HeatMapOptions = {
-  minOpacity: 1,
-  radius: 20
-}
-L.heatLayer(HEAT_MAP_VALS, HEAT_LAYER_OPTS).addTo(map);
-
-function gatherPoint(x: number, y: number): Point {
-  return map.latLngToLayerPoint(new L.LatLng(x, y));
-}
 
 const spread = getSpread();
+const clusteredMarkers = L.markerClusterGroup();
 
-
-function getEffects() {
-  for (const spreadDay of spread) {
-    const occurances = spreadDay.occurances;
-    const heatForDay = new Array<HeatLatLngTuple>();
-    for (const occurance of occurances) {
-      let p: L.Point = occurance.properties.point;
-      let heatForOccurance: HeatLatLngTuple = [p.x, p.y, 0.9];
-      heatForDay.push(heatForOccurance);
-    }
-    L.heatLayer(heatForDay, HEAT_LAYER_OPTS).addTo(map);
-  }
+function getClustersForToday() {
+  const today = spread[spread.length -1];
+  showInfectedForDay(today);
 }
 
-$('#clickMe').click(function() {
-  getEffects();
+function showInfectedForDay(spreadDay: SpreadDay) {
+  const occurances = spreadDay.occurances;
+  for (const occurance of occurances) {
+    const occuranceCount = occurance.properties.infectedCount;
+    const p: L.Point = occurance.properties.point;
+    const title = occurance.properties.stateProvince;
+    const occuranceLatLng: L.LatLng = new L.LatLng(p.x, p.y);
+    // create a marker for the state/ province
+    let marker = L.marker(occuranceLatLng, { title: title });
+    marker.bindPopup(title);
+    clusteredMarkers.addLayer(marker);
+    // add the actual counts now
+    // subtract 1 for marker already added for state/ provimce marker
+    let i = occuranceCount - 1;
+    while (i > 0) {
+      let marker = L.marker(occuranceLatLng);
+      marker.bindPopup(title);
+      clusteredMarkers.addLayer(marker);
+      i--;
+    }
+  }
+  map.addLayer(clusteredMarkers);
+}
+
+$(document).ready(function() {
+  getClustersForToday();
 });
