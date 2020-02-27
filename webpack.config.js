@@ -16,6 +16,7 @@ module.exports = () => {
   }
 
   return {
+    mode: 'development',
     entry: {
       bundle: './public/ts/index.ts'
     },
